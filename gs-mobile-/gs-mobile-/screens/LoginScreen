@@ -1,0 +1,68 @@
+import React, { useState } from "react";
+import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet, Image } from "react-native";
+import { styles } from './assets/styleSheet';
+
+export default function LoginScreen({ navigation }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const validateEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
+  const handleLogin = () => {
+    if (!email || !password) {
+      Alert.alert("Erro", "Por favor, preencha todos os campos.");
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      Alert.alert("Erro", "Digite um e-mail válido.");
+      return;
+    }
+
+    if (password.length < 6) {
+      Alert.alert("Erro", "A senha deve ter pelo menos 6 caracteres.");
+      return;
+    }
+
+    // Se passou por todas as validações
+    Alert.alert("Sucesso", "Login realizado com sucesso!");
+    navigation.navigate("Home"); // Altere o nome da tela conforme seu Navigator
+  };
+
+  return (
+    <View style={styles.container}>
+      <Image
+        source={{ uri: "https://cdn-icons-png.flaticon.com/512/727/727399.png" }}
+        style={styles.logo}
+      />
+      <Text style={styles.title}>Bem-vindo ao Ecoa</Text>
+
+      <TextInput
+        style={styles.input}
+        placeholder="E-mail"
+        value={email}
+        onChangeText={setEmail}
+        keyboardType="email-address"
+        autoCapitalize="none"
+      />
+
+      <TextInput
+        style={styles.input}
+        placeholder="Senha"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+      />
+
+      <TouchableOpacity style={styles.button} onPress={handleLogin}>
+        <Text style={styles.buttonText}>Entrar</Text>
+      </TouchableOpacity>
+
+      <Text style={styles.footerText}>Melhore sua fala, fortaleça sua voz.</Text>
+    </View>
+  );
+};
+
